@@ -1,6 +1,7 @@
 package fr.jm.mine.controllers.impl;
 
 import fr.jm.mine.controllers.ChannelController;
+import fr.jm.mine.enums.SearchModeEnum;
 import fr.jm.mine.resources.entities.MessageBodyResource;
 import fr.jm.mine.resources.entities.MessageFullResource;
 import fr.jm.mine.services.ChannelService;
@@ -36,10 +37,18 @@ public class ChannelControllerImpl implements ChannelController {
     }
 
     @Override
-    public Page<MessageFullResource> getMessagesByChannel(String author, String channel, Pageable pageable) {
+    public Page<MessageFullResource> getMessagesByChannel(String author, SearchModeEnum searchMode,
+                                                          String channel, Pageable pageable) {
         if (author.isEmpty()) {
             return channelService.getAllMessagesByChannel(channel, pageable);
         } else {
+            if (searchMode == SearchModeEnum.STARTBY) {
+
+            }
+            if (searchMode == SearchModeEnum.CONTAINS) {
+
+            }
+            // else SearchModeEnum.STRICT
             return channelService.getAllMessagesByChannelAndAuthor(channel, author, pageable);
         }
     }

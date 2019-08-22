@@ -1,5 +1,6 @@
 package fr.jm.mine.controllers;
 
+import fr.jm.mine.enums.SearchModeEnum;
 import fr.jm.mine.resources.entities.MessageBodyResource;
 import fr.jm.mine.resources.entities.MessageFullResource;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ public interface ChannelController {
     @GetMapping("/{channel}")
     Page<MessageFullResource> getMessagesByChannel(
             @RequestParam(value = "author", defaultValue = "", required = false) String author,
+            @RequestParam(value = "mode", defaultValue = "STRICT", required = false) SearchModeEnum searchMode,
             @PathVariable String channel, Pageable pageable);
 
     @PostMapping("/{channel}")
