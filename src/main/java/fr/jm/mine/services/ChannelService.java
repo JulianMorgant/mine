@@ -19,6 +19,10 @@ public interface ChannelService {
 
     Page<MessageFullResource> getAllMessagesByChannelAndAuthor(String channel, String author, Pageable pageable);
 
+    Page<MessageFullResource> getAllMessagesByChannelAndAuthorStartBy(String channel, String author, Pageable pageable);
+
+    Page<MessageFullResource> getAllMessagesByChannelAndAuthorContains(String channel, String author, Pageable pageable);
+
     Page<MessageFullResource> getAllMessagesByChannelAndCreationDateBetween(String channel, String creationDateRangeIn,
                                                                             String creationDateRangeOut, Pageable pageable);
 

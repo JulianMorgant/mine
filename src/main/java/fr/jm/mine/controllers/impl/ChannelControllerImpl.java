@@ -43,10 +43,10 @@ public class ChannelControllerImpl implements ChannelController {
             return channelService.getAllMessagesByChannel(channel, pageable);
         } else {
             if (searchMode == SearchModeEnum.STARTBY) {
-
+                return channelService.getAllMessagesByChannelAndAuthorStartBy(channel,author,pageable);
             }
             if (searchMode == SearchModeEnum.CONTAINS) {
-
+                return channelService.getAllMessagesByChannelAndAuthorContains(channel,author,pageable);
             }
             // else SearchModeEnum.STRICT
             return channelService.getAllMessagesByChannelAndAuthor(channel, author, pageable);

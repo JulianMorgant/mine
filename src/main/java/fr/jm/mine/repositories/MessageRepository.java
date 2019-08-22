@@ -31,7 +31,11 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
 
     Page<MessageEntity> findMessageEntitiesByChannelAndAuthor(String channel,String author, Pageable pageable);
 
+    @Query (value = "select me from MessageEntity me where (me.channel = :channel) and ( lower(me.author) like lower(concat(:author,'%') ) )")
+    Page<MessageEntity> findMessageEntitiesByChannelAndLAuthorStartBy(String channel,String author, Pageable pageable);
 
+    @Query (value = "select me from MessageEntity me where (me.channel = :channel) and ( lower(me.author) like lower(concat('%',:author,'%') ) )")
+    Page<MessageEntity> findMessageEntitiesByChannelAndLAuthorContains(String channel,String author, Pageable pageable);
 
     Page<MessageEntity> findMessageEntitiesByChannelAndCreatedDate_DateBetween(String channel,
                                                                            String creationDateRangeIn,

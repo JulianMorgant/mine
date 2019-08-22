@@ -57,6 +57,26 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
+    public Page<MessageFullResource> getAllMessagesByChannelAndAuthorStartBy(String channel, String author, Pageable pageable) {
+        Page<MessageEntity> messageEntities =
+                messageRepository.findMessageEntitiesByChannelAndLAuthorStartBy(channel, author, pageable);
+        if (messageEntities.isEmpty()) {
+            throw new ResourceNotFoundException("No message from " + author + " found");
+        }
+        return messageEntities.map(s -> modelMapper.map(s, MessageFullResource.class));
+    }
+
+    @Override
+    public Page<MessageFullResource> getAllMessagesByChannelAndAuthorContains(String channel, String author, Pageable pageable) {
+        Page<MessageEntity> messageEntities =
+                messageRepository.findMessageEntitiesByChannelAndLAuthorContains(channel, author, pageable);
+        if (messageEntities.isEmpty()) {
+            throw new ResourceNotFoundException("No message from " + author + " found");
+        }
+        return messageEntities.map(s -> modelMapper.map(s, MessageFullResource.class));
+    }
+
+    @Override
     public Page<MessageFullResource> getAllMessagesByChannelAndCreationDateBetween(String channel, String creationDateRangeIn,
                                                                                    String creationDateRangeOut, Pageable pageable) {
         return null;
