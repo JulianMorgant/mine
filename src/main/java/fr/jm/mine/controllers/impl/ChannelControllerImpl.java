@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 public class ChannelControllerImpl implements ChannelController {
 
-    private MessageServiceImpl messageService;
+    private MessageServiceImpl messageService;  //TODO Delete if possible
     private ChannelServiceImpl channelService;
 
     public ChannelControllerImpl(MessageServiceImpl messageService, ChannelServiceImpl channelService) {
@@ -36,8 +36,12 @@ public class ChannelControllerImpl implements ChannelController {
     }
 
     @Override
-    public Page<MessageFullResource> getMessagesByChannel(String channel, Pageable pageable) {
-        return null;
+    public Page<MessageFullResource> getMessagesByChannel(String author, String channel, Pageable pageable) {
+        if (author.isEmpty()) {
+            return channelService.getAllMessagesByChannel(channel, pageable);
+        } else {
+            return channelService.getAllMessagesByChannelAndAuthor(channel, author, pageable);
+        }
     }
 
     @Override

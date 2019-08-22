@@ -39,7 +39,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Page<MessageFullResource> getAllMessagesByChannel(String channel, Pageable pageable) {
-        Page<MessageEntity> messageEntities = messageRepository.findMessageEntitiesByChannel(channel,pageable);
+        Page<MessageEntity> messageEntities = messageRepository.findMessageEntitiesByChannel(channel, pageable);
         if (messageEntities.isEmpty()) {
             throw new ResourceNotFoundException("No channel " + channel + " found");
         }
@@ -48,11 +48,17 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Page<MessageFullResource> getAllMessagesByChannelAndAuthor(String channel, String author, Pageable pageable) {
-        return null;
+        Page<MessageEntity> messageEntities =
+                messageRepository.findMessageEntitiesByChannelAndAuthor(channel, author, pageable);
+        if (messageEntities.isEmpty()) {
+            throw new ResourceNotFoundException("No message from " + author + " found");
+        }
+        return messageEntities.map(s -> modelMapper.map(s, MessageFullResource.class));
     }
 
     @Override
-    public Page<MessageFullResource> getAllMessagesByChannelAndCreationDateBetween(String channel, String creationDateRangeIn, String creationDateRangeOut, Pageable pageable) {
+    public Page<MessageFullResource> getAllMessagesByChannelAndCreationDateBetween(String channel, String creationDateRangeIn,
+                                                                                   String creationDateRangeOut, Pageable pageable) {
         return null;
     }
 }

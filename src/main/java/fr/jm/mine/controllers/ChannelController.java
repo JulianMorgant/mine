@@ -23,7 +23,9 @@ public interface ChannelController {
     Page<String> getChannelsNames(Pageable pageable);
 
     @GetMapping("/{channel}")
-    Page<MessageFullResource> getMessagesByChannel(@PathVariable String channel, Pageable pageable);
+    Page<MessageFullResource> getMessagesByChannel(
+            @RequestParam(value = "author", defaultValue = "", required = false) String author,
+            @PathVariable String channel, Pageable pageable);
 
     @PostMapping("/{channel}")
     MessageFullResource postMessage(
