@@ -1,2 +1,2 @@
 # mine
-Whathsapp clone
+Whathsapp clone / backend service
