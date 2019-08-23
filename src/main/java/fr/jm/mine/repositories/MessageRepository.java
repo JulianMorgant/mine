@@ -68,8 +68,6 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
                                                                                LocalDateTime dateTo, String author,
                                                                                Pageable pageable);
 
-
-
     @Query(value = "select me from MessageEntity me where " +
             "(me.createdDate between :dateFrom and :dateTo)" +
             " and (me.channel = :channel)" +
