@@ -23,9 +23,6 @@ public interface MessageService {
 
     Page<MessageFullResource> getAllMessagesByAuthor(String author, Pageable pageable);
 
-    Page<MessageFullResource> getAllMessagesByChannelAndCreationDateBetween(String channel, String creationDateRangeIn,
-                                                                            String creationDateRangeOut, Pageable pageable);
-
     MessageFullResource addNewMessage(MessageFullResource messageFullResource);
 
     MessageFullResource checkAndFormatNewMessageFullResource (MessageBodyResource messageBodyResource);

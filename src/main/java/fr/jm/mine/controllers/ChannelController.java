@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -27,6 +28,8 @@ public interface ChannelController {
     Page<MessageFullResource> getMessagesByChannel(
             @RequestParam(value = "author", defaultValue = "", required = false) String author,
             @RequestParam(value = "mode", defaultValue = "STRICT", required = false) SearchModeEnum searchMode,
+            @RequestParam(value = "from",defaultValue = "", required = false) String dateFrom,
+            @RequestParam(value = "to",defaultValue = "", required = false) String dateTo,
             @PathVariable String channel, Pageable pageable);
 
     @PostMapping("/{channel}")

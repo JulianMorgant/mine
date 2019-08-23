@@ -7,11 +7,15 @@ import fr.jm.mine.resources.entities.MessageFullResource;
 import fr.jm.mine.services.ChannelService;
 import fr.jm.mine.services.impl.ChannelServiceImpl;
 import fr.jm.mine.services.impl.MessageServiceImpl;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Julian MORGANT
@@ -38,18 +42,32 @@ public class ChannelControllerImpl implements ChannelController {
 
     @Override
     public Page<MessageFullResource> getMessagesByChannel(String author, SearchModeEnum searchMode,
+                                                          String strDateFrom, String strDateTo,
                                                           String channel, Pageable pageable) {
+
+        LocalDateTime dateFrom = LocalDateTime.of(1980,02,07,0,0,0);
+        LocalDateTime dateTo = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+        if (!strDateFrom.equals("")) {
+            dateFrom = LocalDateTime.parse(strDateFrom,formatter);
+        }
+
+        if (!strDateTo.equals("")) {
+            dateTo = LocalDateTime.parse(strDateTo,formatter);
+        }
+
         if (author.isEmpty()) {
-            return channelService.getAllMessagesByChannel(channel, pageable);
+            return channelService.getAllMessagesByChannelAndDates(channel,dateFrom,dateTo, pageable);
         } else {
             if (searchMode == SearchModeEnum.STARTBY) {
-                return channelService.getAllMessagesByChannelAndAuthorStartBy(channel,author,pageable);
+                return channelService.getAllMessagesByChannelAndDatesAndAuthorStartBy(channel,dateFrom,dateTo,author,pageable);
             }
             if (searchMode == SearchModeEnum.CONTAINS) {
-                return channelService.getAllMessagesByChannelAndAuthorContains(channel,author,pageable);
+                return channelService.getAllMessagesByChannelAndDatesAndAuthorContains(channel,dateFrom,dateTo,author,pageable);
             }
             // else SearchModeEnum.STRICT
-            return channelService.getAllMessagesByChannelAndAuthor(channel, author, pageable);
+            return channelService.getAllMessagesByChannelAndDatesAndAuthor(channel,dateFrom,dateTo, author, pageable);
         }
     }
 

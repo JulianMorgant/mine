@@ -60,17 +60,7 @@ public class MessageServiceImpl implements MessageService {
         return messageEntities.map(s -> modelMapper.map(s, MessageFullResource.class));
     }
 
-    @Override
-    public Page<MessageFullResource> getAllMessagesByChannelAndCreationDateBetween
-            (String channel, String creationDateRangeIn, String creationDateRangeOut, Pageable pageable) {
-        Page<MessageEntity> messageEntities =
-                messageRepository.findMessageEntitiesByChannelAndCreatedDate_DateBetween(channel,creationDateRangeIn,
-                                                                                        creationDateRangeOut,pageable);
-        if (messageEntities.isEmpty()) {
-            throw new ResourceNotFoundException("No message fond");
-        }
-        return messageEntities.map(s -> modelMapper.map(s, MessageFullResource.class));
-    }
+
 
     @Override
     public MessageFullResource addNewMessage(MessageFullResource messageFullResource) {

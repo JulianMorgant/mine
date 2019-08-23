@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * @author Julian MORGANT
  * @contact julian.morgant@gmail.com
@@ -38,8 +40,10 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Page<MessageFullResource> getAllMessagesByChannel(String channel, Pageable pageable) {
-        Page<MessageEntity> messageEntities = messageRepository.findMessageEntitiesByChannel(channel, pageable);
+    public Page<MessageFullResource> getAllMessagesByChannelAndDates(String channel, LocalDateTime dateFrom,
+                                                                     LocalDateTime dateTo, Pageable pageable) {
+        Page<MessageEntity> messageEntities =
+                messageRepository.findMessageEntitiesByChannelAndDates(channel, dateFrom, dateTo, pageable);
         if (messageEntities.isEmpty()) {
             throw new ResourceNotFoundException("No channel " + channel + " found");
         }
@@ -47,9 +51,11 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Page<MessageFullResource> getAllMessagesByChannelAndAuthor(String channel, String author, Pageable pageable) {
+    public Page<MessageFullResource> getAllMessagesByChannelAndDatesAndAuthor(String channel, LocalDateTime dateFrom,
+                                                                              LocalDateTime dateTo, String author,
+                                                                              Pageable pageable) {
         Page<MessageEntity> messageEntities =
-                messageRepository.findMessageEntitiesByChannelAndAuthor(channel, author, pageable);
+                messageRepository.findMessageEntitiesByChannelAndDatesAndAuthor(channel, dateFrom, dateTo, author, pageable);
         if (messageEntities.isEmpty()) {
             throw new ResourceNotFoundException("No message from " + author + " found");
         }
@@ -57,9 +63,11 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Page<MessageFullResource> getAllMessagesByChannelAndAuthorStartBy(String channel, String author, Pageable pageable) {
+    public Page<MessageFullResource> getAllMessagesByChannelAndDatesAndAuthorStartBy(String channel, LocalDateTime dateFrom,
+                                                                                     LocalDateTime dateTo, String author,
+                                                                                     Pageable pageable) {
         Page<MessageEntity> messageEntities =
-                messageRepository.findMessageEntitiesByChannelAndLAuthorStartBy(channel, author, pageable);
+                messageRepository.findMessageEntitiesByChannelAndDatesAndLAuthorStartBy(channel, dateFrom, dateTo, author, pageable);
         if (messageEntities.isEmpty()) {
             throw new ResourceNotFoundException("No message from " + author + " found");
         }
@@ -67,18 +75,17 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Page<MessageFullResource> getAllMessagesByChannelAndAuthorContains(String channel, String author, Pageable pageable) {
+    public Page<MessageFullResource> getAllMessagesByChannelAndDatesAndAuthorContains(String channel, LocalDateTime dateFrom,
+                                                                                      LocalDateTime dateTo, String author,
+                                                                                      Pageable pageable) {
         Page<MessageEntity> messageEntities =
-                messageRepository.findMessageEntitiesByChannelAndLAuthorContains(channel, author, pageable);
+                messageRepository.findMessageEntitiesByChannelAndDatesAndAuthorContains(channel,dateFrom,dateTo,
+                        author, pageable);
         if (messageEntities.isEmpty()) {
             throw new ResourceNotFoundException("No message from " + author + " found");
         }
         return messageEntities.map(s -> modelMapper.map(s, MessageFullResource.class));
     }
 
-    @Override
-    public Page<MessageFullResource> getAllMessagesByChannelAndCreationDateBetween(String channel, String creationDateRangeIn,
-                                                                                   String creationDateRangeOut, Pageable pageable) {
-        return null;
-    }
+
 }
